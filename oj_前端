@@ -1,0 +1,32 @@
+npm install
+
+
+# we use webpack DllReference to decrease the build time,
+# this command only needs execute once unless you upgrade the package in build/webpack.dll.conf.js
+NODE_ENV=development npm run build:dll
+
+# the dev-server will set proxy table to your backend
+export TARGET=http://localhost
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+
+
+
+安裝到source code 中
+
+1.
+
+npm run build 就可以得到一个 dist 文件夹
+
+2.
+
+将 dist 文件夹复制到服务器上某个目录下，比如 /data/OnlineJudgeDeploy/data/backend/dist，然后修改 docker-compose.yml，
+在 oj-backend 模块中的 volumes 中增加一行 - /data/OnlineJudgeDeploy/data/backend/dist:/app/dist （冒号前面的请修改为实际的路径）
+
+
+3.
+
+ docker-compose up -d  (-d 可省略)
+
