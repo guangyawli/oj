@@ -44,6 +44,19 @@
       </Submenu>
       <template v-if="!isAuthenticated">
         <div class="btn-menu">
+          <!--
+          <Button
+            type="primary"
+            shape="circle"
+            @click="handlejump">{{$t('m.UserLogin')}}
+          </Button>
+          -->
+          <Button type="primary"
+                  ref="loginBtn"
+                  shape="circle"
+                  @click="handlejump('tlogin')">{{$t('m.tlogin')}}
+          </Button>
+
           <Button type="ghost"
                   ref="loginBtn"
                   shape="circle"
@@ -107,7 +120,16 @@
           visible: true,
           mode: mode
         })
+      },
+      handlejump () {
+        this.$router.push({
+          name: 'trylogin'
+        })
       }
+ //     handlejump: function () {
+ //       return this.$router.push({path: '/admin/login'})
+ //     }
+
     },
     computed: {
       ...mapGetters(['website', 'modalStatus', 'user', 'isAuthenticated', 'isAdminRole']),

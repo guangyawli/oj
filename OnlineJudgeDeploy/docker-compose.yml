@@ -53,6 +53,7 @@ services:
       - judge-server
     volumes:
       - $PWD/data/backend:/data
+      - /home/xyaw/oj/OnlineJudgeDeploy/dist:/app/dist
     environment:
       - POSTGRES_DB=onlinejudge
       - POSTGRES_USER=onlinejudge

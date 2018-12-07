@@ -14,7 +14,8 @@ import {
   ResetPassword,
   SubmissionDetails,
   SubmissionList,
-  UserHome
+  UserHome,
+  tlogin
 } from '../views'
 
 import * as Contest from '@oj/views/contest'
@@ -172,6 +173,12 @@ export default [
     name: 'faq',
     meta: {title: 'FAQ'},
     component: FAQ
+  },
+  {
+    path: '/admin/log_auth',
+    name: 'trylogin',
+    meta: {title: 'tlogin_title'},
+    component: tlogin
   },
   {
     path: '*',
