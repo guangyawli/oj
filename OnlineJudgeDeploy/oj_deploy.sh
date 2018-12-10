@@ -1,6 +1,7 @@
 
 sudo rm -r -f dist
 cd ../OnlineJudgeFE
+
 npm run build
 
 cp -R dist ../OnlineJudgeDeploy

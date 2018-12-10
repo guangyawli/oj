@@ -15,7 +15,7 @@ import {
   SubmissionDetails,
   SubmissionList,
   UserHome,
-  tlogin
+  trlogin
 } from '../views'
 
 import * as Contest from '@oj/views/contest'
@@ -175,10 +175,10 @@ export default [
     component: FAQ
   },
   {
-    path: '/admin/log_auth',
+    path: '/faq',
     name: 'trylogin',
     meta: {title: 'tlogin_title'},
-    component: tlogin
+    component: trlogin
   },
   {
     path: '*',

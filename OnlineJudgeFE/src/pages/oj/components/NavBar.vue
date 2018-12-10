@@ -50,13 +50,13 @@
             shape="circle"
             @click="handlejump">{{$t('m.UserLogin')}}
           </Button>
-          -->
+
           <Button type="primary"
                   ref="loginBtn"
                   shape="circle"
                   @click="handlejump('tlogin')">{{$t('m.tlogin')}}
           </Button>
-
+          -->
           <Button type="ghost"
                   ref="loginBtn"
                   shape="circle"
@@ -121,14 +121,14 @@
           mode: mode
         })
       },
-      handlejump () {
-        this.$router.push({
-          name: 'trylogin'
-        })
+      // handlejump () {
+      //  this.$router.push({
+      //    name: 'trylogin'
+      //  })
+      // }
+      handlejump: function () {
+        return this.$router.push({path: '/admin/log_auth'})
       }
- //     handlejump: function () {
- //       return this.$router.push({path: '/admin/login'})
- //     }
 
     },
     computed: {

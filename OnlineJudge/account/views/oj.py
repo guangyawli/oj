@@ -27,6 +27,8 @@ from ..serializers import (TwoFactorAuthCodeSerializer, UserProfileSerializer,
                            EditUserProfileSerializer, ImageUploadForm)
 from ..tasks import send_email_async
 
+from django.http import HttpResponse
+
 
 class UserProfileAPI(APIView):
     @method_decorator(ensure_csrf_cookie)
@@ -152,9 +154,17 @@ class CheckTFARequiredAPI(APIView):
         return self.success({"result": result})
 
 
+class UserLoginAPI1(APIView):
+    def hello(request):
+        return HttpResponse("Hello world ! ")
+
 class UserLoginAPI(APIView):
     @validate_serializer(UserLoginSerializer)
     def post(self, request):
+        #test api
+
+
+
         """
         User login api
         """
