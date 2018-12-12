@@ -27,7 +27,11 @@ from ..serializers import (TwoFactorAuthCodeSerializer, UserProfileSerializer,
                            EditUserProfileSerializer, ImageUploadForm)
 from ..tasks import send_email_async
 
-from django.http import HttpResponse
+
+#xyaw
+from django.http import HttpResponseRedirect
+from requests_oauthlib import OAuth2Session
+from django.shortcuts import render
 
 
 class UserProfileAPI(APIView):
@@ -154,41 +158,85 @@ class CheckTFARequiredAPI(APIView):
         return self.success({"result": result})
 
 
-class UserLoginAPI1(APIView):
-    def hello(request):
-        return HttpResponse("Hello world ! ")
+def UserLoginAPI1(APIView):
+    # Credentials you get from registering a new application
+    client_id = 'cb288dc63f971200d164'
+    client_secret = 'cf9906a9b42a1c41dfd7446a5399de3edcf00cf7'
+
+    # OAuth endpoints given in the GitHub API documentation
+    authorization_base_url = 'https://github.com/login/oauth/authorize'
+    token_url = 'https://github.com/login/oauth/access_token'
+    github = OAuth2Session(client_id)
+
+    # Redirect user to GitHub for authorization
+    authorization_url, state = github.authorization_url(authorization_base_url)
+    print('Please go here and authorize,', authorization_url)
+    HttpResponseRedirect(authorization_url)
+
+    test_get(authorization_base_url)
+    redirect_response = input('https://oj.twshop.asia')
+    github.fetch_token(token_url, client_secret=client_secret, authorization_response=redirect_response)
+    r = github.get('https://api.github.com/user')
+    return render(request, HttpResponseRedirect(str(authorization_url)))
 
 class UserLoginAPI(APIView):
     @validate_serializer(UserLoginSerializer)
     def post(self, request):
         #test api
 
+        #  # Credentials you get from registering a new application
+        # client_id = 'cb288dc63f971200d164'
+        # client_secret = 'cf9906a9b42a1c41dfd7446a5399de3edcf00cf7'
+        #
+        #  # OAuth endpoints given in the GitHub API documentation
+        # authorization_base_url = 'https://github.com/login/oauth/authorize'
+        # token_url = 'https://github.com/login/oauth/access_token'
+        #
+        #
+        # github = OAuth2Session(client_id)
+        #
+        #  # Redirect user to GitHub for authorization
+        # authorization_url, state = github.authorization_url(authorization_base_url)
+        #print 'Please go here and authorize,', authorization_url
 
+        # test_get(authorization_base_url)
+
+         # Get the authorization verifier code from the callback url
+        #redirect_response = input('https://lab.openedu.tw/')
+
+         # Fetch the access token
+         # github.fetch_token(token_url, client_secret=client_secret, authorization_response = redirect_response)
+
+         # Fetch a protected resource, i.e. user profile
+        #r = github.get('https://api.github.com/user')
+        #print(r.content)
+
+        #return render(request, HttpResponseRedirect(str(authorization_url)))
 
         """
         User login api
         """
-        data = request.data
-        user = auth.authenticate(username=data["username"], password=data["password"])
+        # data = request.data
+        # user = auth.authenticate(username=data["username"], password=data["password"])
         # None is returned if username or password is wrong
-        if user:
-            if user.is_disabled:
-                return self.error("Your account has been disabled")
-            if not user.two_factor_auth:
-                auth.login(request, user)
-                return self.success("Succeeded")
-
-            # `tfa_code` not in post data
-            if user.two_factor_auth and "tfa_code" not in data:
-                return self.error("tfa_required")
-
-            if OtpAuth(user.tfa_token).valid_totp(data["tfa_code"]):
-                auth.login(request, user)
-                return self.success("Succeeded")
-            else:
-                return self.error("Invalid two factor verification code")
-        else:
-            return self.error("Invalid username or password")
+        # if user:
+        #     if user.is_disabled:
+        #         return self.error("Your account has been disabled")
+        #     if not user.two_factor_auth:
+        #         auth.login(request, user)
+        #         return self.success("Succeeded")
+        #
+        #     # `tfa_code` not in post data
+        #     if user.two_factor_auth and "tfa_code" not in data:
+        #         return self.error("tfa_required")
+        #
+        #     if OtpAuth(user.tfa_token).valid_totp(data["tfa_code"]):
+        #         auth.login(request, user)
+        #         return self.success("Succeeded")
+        #     else:
+        #         return self.error("Invalid two factor verification code")
+        # else:
+        #     return self.error("Invalid username or password")
 
 
 class UserLogoutAPI(APIView):

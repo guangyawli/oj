@@ -14,8 +14,7 @@ import {
   ResetPassword,
   SubmissionDetails,
   SubmissionList,
-  UserHome,
-  trlogin
+  UserHome
 } from '../views'
 
 import * as Contest from '@oj/views/contest'
@@ -174,12 +173,12 @@ export default [
     meta: {title: 'FAQ'},
     component: FAQ
   },
-  {
-    path: '/faq',
-    name: 'trylogin',
-    meta: {title: 'tlogin_title'},
-    component: trlogin
-  },
+  // {
+  //   name: 'tlogin',
+  //   path: '/api/tlogin',
+  //   meta: {title: 'Tlogin'},
+  //   component: Tlogin
+  // },
   {
     path: '*',
     meta: {title: '404'},

@@ -44,24 +44,12 @@
       </Submenu>
       <template v-if="!isAuthenticated">
         <div class="btn-menu">
-          <!--
-          <Button
-            type="primary"
-            shape="circle"
-            @click="handlejump">{{$t('m.UserLogin')}}
-          </Button>
-
-          <Button type="primary"
-                  ref="loginBtn"
-                  shape="circle"
-                  @click="handlejump('tlogin')">{{$t('m.tlogin')}}
-          </Button>
-          -->
+          <a href="/api/tlogin">
           <Button type="ghost"
                   ref="loginBtn"
-                  shape="circle"
-                  @click="handleBtnClick('login')">{{$t('m.Login')}}
+                  shape="circle">{{$t('login')}}
           </Button>
+          </a>
           <Button v-if="website.allow_register"
                   type="ghost"
                   shape="circle"
@@ -121,15 +109,9 @@
           mode: mode
         })
       },
-      // handlejump () {
-      //  this.$router.push({
-      //    name: 'trylogin'
-      //  })
-      // }
       handlejump: function () {
-        return this.$router.push({path: '/admin/log_auth'})
+        // this.$router.push({path: '/api/tlogin'})
       }
-
     },
     computed: {
       ...mapGetters(['website', 'modalStatus', 'user', 'isAuthenticated', 'isAdminRole']),

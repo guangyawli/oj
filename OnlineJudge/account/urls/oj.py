@@ -5,12 +5,13 @@ from ..views.oj import (ApplyResetPasswordAPI, ResetPasswordAPI,
                         UserLoginAPI, UserLogoutAPI, UsernameOrEmailCheck,
                         AvatarUploadAPI, TwoFactorAuthAPI, UserProfileAPI,
                         UserRankAPI, CheckTFARequiredAPI, SessionManagementAPI,
-                        ProfileProblemDisplayIDRefreshAPI, OpenAPIAppkeyAPI, SSOAPI,
-                        UserLoginAPI1)
+                        ProfileProblemDisplayIDRefreshAPI, OpenAPIAppkeyAPI, SSOAPI, UserLoginAPI1,
+                        )
 
 from utils.captcha.views import CaptchaAPIView
 
 urlpatterns = [
+    url(r"^tlogin/?$", UserLoginAPI1, name="user_login_api1"),
     url(r"^login/?$", UserLoginAPI.as_view(), name="user_login_api"),
     url(r"^logout/?$", UserLogoutAPI.as_view(), name="user_logout_api"),
     url(r"^register/?$", UserRegisterAPI.as_view(), name="user_register_api"),

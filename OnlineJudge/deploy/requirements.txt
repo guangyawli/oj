@@ -17,3 +17,6 @@ gunicorn
 jsonfield
 XlsxWriter
 raven
+oauthlib
+requests_oauthlib
+
