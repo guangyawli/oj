@@ -44,7 +44,7 @@
       </Submenu>
       <template v-if="!isAuthenticated">
         <div class="btn-menu">
-          <a href="/api/tlogin">
+          <a href="https://oj.openedu.tw/api/tlogin">
           <Button type="ghost"
                   ref="loginBtn"
                   shape="circle">{{$t('login')}}

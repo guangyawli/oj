@@ -81,6 +81,7 @@
         }
       }
     },
+    // xyaw
     mounted: function () {
       this.handleLogin()
     },
@@ -93,8 +94,12 @@
         })
       },
       handleLogin () {
-        this.formLogin.username = 'test'
-        this.formLogin.password = 'test1234'
+        // this.formLogin.username = 'test'
+        // this.formLogin.password = 'test1234'
+        //
+        // this.changeModalStatus({visible: false})
+        // this.$router.push({name: 'tlogin'})
+
         this.validateForm('formLogin').then(valid => {
           this.btnLoginLoading = true
           let formData = Object.assign({}, this.formLogin)

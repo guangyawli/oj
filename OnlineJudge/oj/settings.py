@@ -48,6 +48,7 @@ LOCAL_APPS = (
 
 INSTALLED_APPS = VENDOR_APPS + LOCAL_APPS
 
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -78,6 +79,9 @@ TEMPLATES = [
         },
     },
 ]
+
+
+
 WSGI_APPLICATION = 'oj.wsgi.application'
 
 # Password validation
@@ -129,6 +133,7 @@ UPLOAD_DIR = f"{DATA_DIR}{UPLOAD_PREFIX}"
 
 STATICFILES_DIRS = [os.path.join(DATA_DIR, "public")]
 
+#DEBUG = True
 
 LOGGING_HANDLERS = ['console', 'sentry'] if production_env else ['console']
 LOGGING = {

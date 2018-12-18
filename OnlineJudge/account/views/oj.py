@@ -31,6 +31,10 @@ from ..tasks import send_email_async
 #xyaw
 from django.http import HttpResponseRedirect,HttpResponse
 from requests_oauthlib import OAuth2Session
+# import requests
+# import json
+# from django.http import StreamingHttpResponse
+# from oauthlib.oauth2 import BackendApplicationClient
 
 
 
@@ -160,48 +164,40 @@ class CheckTFARequiredAPI(APIView):
 
 state1 = None
 token1 = None
+token2 = None
 
-#the github data
-#client_id = 'cb288dc63f971200d164'
-#client_secret = 'cf9906a9b42a1c41dfd7446a5399de3edcf00cf7'
-#token_url = 'https://github.com/login/oauth/access_token'
-#authorization_base_url = 'https://github.com/login/oauth/authorize'
-#github = OAuth2Session(client_id)
-
-#the openedu data
+# the openedu data
 client_id = '8ece2f9def967da23831'
 client_secret = 'aa58813af7bf02f4d3606a0e26ded1508874d368'
-redirect_uri = 'https://oj.openedu.tw/api/rlogin'
 
+requestapi = 'https://courses-api.openedu.tw/oauth2/user_info'
 authorization_base_url = 'https://courses-api.openedu.tw/oauth2/authorize'
 token_url = 'https://courses-api.openedu.tw/oauth2/access_token'
-#profile_url = 'https://courses-api.openedu.tw/oauth2/user_info'
-github = OAuth2Session(client_id)
-tusername = None
-tpassword = None
 
-
+redirect_uri = 'https://oj.openedu.tw/api/rlogin'
+oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=['email', 'profile', 'openid'])
 
 
 def UserLoginAPI1(request):
-    #github = OAuth2Session(client_id)
-    authorization_url, state1 = github.authorization_url(authorization_base_url)
-    # State is used to prevent CSRF, keep this for later.
-    # session['oauth_state'] = state
+    authorization_url, state1 = oauth.authorization_url(authorization_base_url)
+    print(authorization_url)
     return HttpResponseRedirect(authorization_url)
 
 
 def UserLoginAPI2(request):
     redirect_response = 'https://oj.openedu.tw'+request.get_full_path()
-    token1 = github.fetch_token(token_url, client_secret=client_secret, authorization_response=redirect_response)
-    print(token1)
-    return HttpResponse(token1)
+    token1 = oauth.fetch_token(token_url, authorization_response=redirect_response, client_secret=client_secret)
+    # token2 = oauth.access_token
+    # return HttpResponse(token2)
+    r = oauth.get(requestapi)
+    return HttpResponse(r.content)
+
 
 
 def UserLoginAPI3(request):
-    github = OAuth2Session(client_id, token1)
-    # jsonify(github.get('https://api.github.com/user').json())
-    r = github.get('https://api.github.com/user')
+    # oauth = OAuth2Session(client_id, token2)
+    # r = requests.get(requestapi)
+    r = oauth.get('https://courses-api.openedu.tw/oauth2/user_info')
     return HttpResponse(r.content)
 
 
