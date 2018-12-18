@@ -6,12 +6,16 @@ from ..views.oj import (ApplyResetPasswordAPI, ResetPasswordAPI,
                         AvatarUploadAPI, TwoFactorAuthAPI, UserProfileAPI,
                         UserRankAPI, CheckTFARequiredAPI, SessionManagementAPI,
                         ProfileProblemDisplayIDRefreshAPI, OpenAPIAppkeyAPI, SSOAPI, UserLoginAPI1,
+                        UserLoginAPI2, UserLoginAPI3,
                         )
 
 from utils.captcha.views import CaptchaAPIView
 
 urlpatterns = [
     url(r"^tlogin/?$", UserLoginAPI1, name="user_login_api1"),
+    url(r"^rlogin/?$", UserLoginAPI2, name="user_login_api2"),
+    url(r"^zlogin/?$", UserLoginAPI3, name="user_login_api3"),
+#    url(r'^info/(?P<blog_id>\d+)/$', views.info, name='blog_info'),
     url(r"^login/?$", UserLoginAPI.as_view(), name="user_login_api"),
     url(r"^logout/?$", UserLogoutAPI.as_view(), name="user_logout_api"),
     url(r"^register/?$", UserRegisterAPI.as_view(), name="user_register_api"),
