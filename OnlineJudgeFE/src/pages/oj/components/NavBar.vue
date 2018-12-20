@@ -46,20 +46,20 @@
         <div class="btn-menu">
           <a href="https://oj.openedu.tw/api/tlogin">
           <Button type="ghost"
-                  shape="circle">{{$t('tlogin')}}
+                  shape="circle">{{$t('login')}}
           </Button>
           </a>
-          <Button type="ghost"
-                  ref="loginBtn"
-                  shape="circle"
-                  @click="handleBtnClick('login')">{{$t('m.Login')}}
-          </Button>
-          <Button v-if="website.allow_register"
-                  type="ghost"
-                  shape="circle"
-                  @click="handleBtnClick('register')"
-                  style="margin-left: 5px;">{{$t('m.Register')}}
-          </Button>
+          <!--<Button type="ghost"-->
+                  <!--ref="loginBtn"-->
+                  <!--shape="circle"-->
+                  <!--@click="handleBtnClick('login')">{{$t('m.Login')}}-->
+          <!--</Button>-->
+          <!--<Button v-if="website.allow_register"-->
+                  <!--type="ghost"-->
+                  <!--shape="circle"-->
+                  <!--@click="handleBtnClick('register')"-->
+                  <!--style="margin-left: 5px;">{{$t('m.Register')}}-->
+          <!--</Button>-->
         </div>
       </template>
       <template v-else>
