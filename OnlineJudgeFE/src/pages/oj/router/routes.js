@@ -173,12 +173,6 @@ export default [
     meta: {title: 'FAQ'},
     component: FAQ
   },
-  // {
-  //   name: 'tlogin',
-  //   path: '/api/tlogin',
-  //   meta: {title: 'Tlogin'},
-  //   component: Tlogin
-  // },
   {
     path: '*',
     meta: {title: '404'},

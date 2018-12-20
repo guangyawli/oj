@@ -31,10 +31,35 @@ from ..tasks import send_email_async
 #xyaw
 from django.http import HttpResponseRedirect,HttpResponse
 from requests_oauthlib import OAuth2Session
+
+#from django.contrib.auth import get_user_model
+#User = get_user_model()
+
+from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth.tokens import default_token_generator
+
+from django.contrib.auth import authenticate
+
+import json
 # import requests
 # import json
 # from django.http import StreamingHttpResponse
 # from oauthlib.oauth2 import BackendApplicationClient
+
+state1 = None
+token1 = None
+# token2 = None
+
+# the openedu data
+client_id = '8ece2f9def967da23831'
+client_secret = 'aa58813af7bf02f4d3606a0e26ded1508874d368'
+
+requestapi = 'https://courses-api.openedu.tw/oauth2/user_info'
+authorization_base_url = 'https://courses-api.openedu.tw/oauth2/authorize'
+token_url = 'https://courses-api.openedu.tw/oauth2/access_token'
+
+redirect_uri = 'https://oj.openedu.tw/api/rlogin'
+oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=['email', 'profile', 'openid'])
 
 
 
@@ -162,20 +187,15 @@ class CheckTFARequiredAPI(APIView):
         return self.success({"result": result})
 
 
-state1 = None
-token1 = None
-token2 = None
-
-# the openedu data
-client_id = '8ece2f9def967da23831'
-client_secret = 'aa58813af7bf02f4d3606a0e26ded1508874d368'
-
-requestapi = 'https://courses-api.openedu.tw/oauth2/user_info'
-authorization_base_url = 'https://courses-api.openedu.tw/oauth2/authorize'
-token_url = 'https://courses-api.openedu.tw/oauth2/access_token'
-
-redirect_uri = 'https://oj.openedu.tw/api/rlogin'
-oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=['email', 'profile', 'openid'])
+# class TokenBackend(ModelBackend):
+#     def authenticate(self, pk, token=None):
+#         try:
+#             user = User.objects.get(pk=pk)
+#         except User.DoesNotExist:
+#             return None
+#         if default_token_generator.check_token(user, token):
+#             return user
+#         return None
 
 
 def UserLoginAPI1(request):
@@ -190,15 +210,26 @@ def UserLoginAPI2(request):
     # token2 = oauth.access_token
     # return HttpResponse(token2)
     r = oauth.get(requestapi)
-    return HttpResponse(r.content)
-
+    if User.objects.filter(username=eval(r.text)["preferred_username"]).exists():
+        user = auth.authenticate(username=eval(r.text)['preferred_username'], password=eval(r.text)['user_tracking_id'])
+        if user:
+            auth.login(request, user)
+        return HttpResponseRedirect('https://oj.openedu.tw')
+    else:
+        user = User.objects.create(username=eval(r.text)['preferred_username'], email=eval(r.text)["email"])
+        user.set_password(eval(r.text)["user_tracking_id"])
+        user.save()
+        UserProfile.objects.create(user=user)
+        auth.login(request, user)
+        return HttpResponseRedirect('https://oj.openedu.tw')
 
 
 def UserLoginAPI3(request):
     # oauth = OAuth2Session(client_id, token2)
     # r = requests.get(requestapi)
     r = oauth.get('https://courses-api.openedu.tw/oauth2/user_info')
-    return HttpResponse(r.content)
+    tname=r.content["preferred_username"]
+    return HttpResponse(tname)
 
 
 class UserLoginAPI(APIView):

@@ -107,9 +107,6 @@ export default new VueRouter({
       ]
     },
     {
-      path: '/log_auth', redirect: '/log_auth'
-    },
-    {
       path: '*', redirect: '/login'
     }
   ]

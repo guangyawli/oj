@@ -9,9 +9,7 @@ class Announcement(models.Model):
     # HTML
     content = RichTextField()
     create_time = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-#xyaw modify
-#    created_by = models.ForeignKey(User)
+    created_by = models.ForeignKey(User)
     last_update_time = models.DateTimeField(auto_now=True)
     visible = models.BooleanField(default=True)
 

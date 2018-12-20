@@ -46,10 +46,14 @@
         <div class="btn-menu">
           <a href="https://oj.openedu.tw/api/tlogin">
           <Button type="ghost"
-                  ref="loginBtn"
-                  shape="circle">{{$t('login')}}
+                  shape="circle">{{$t('tlogin')}}
           </Button>
           </a>
+          <Button type="ghost"
+                  ref="loginBtn"
+                  shape="circle"
+                  @click="handleBtnClick('login')">{{$t('m.Login')}}
+          </Button>
           <Button v-if="website.allow_register"
                   type="ghost"
                   shape="circle"
@@ -108,9 +112,6 @@
           visible: true,
           mode: mode
         })
-      },
-      handlejump: function () {
-        // this.$router.push({path: '/api/tlogin'})
       }
     },
     computed: {

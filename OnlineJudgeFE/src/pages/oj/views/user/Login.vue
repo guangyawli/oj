@@ -2,34 +2,21 @@
   <div>
     <Form ref="formLogin" :model="formLogin" :rules="ruleLogin">
       <FormItem prop="username">
-        <Input type="hidden" v-model="formLogin.username"
-        </Input>
-        <!--
         <Input type="text" v-model="formLogin.username" :placeholder="$t('m.LoginUsername')" size="large" @on-enter="handleLogin">
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
-        -->
       </FormItem>
       <FormItem prop="password">
-        <Input type="hidden" v-model="formLogin.password"
-        </Input>
-        <!--
         <Input type="password" v-model="formLogin.password" :placeholder="$t('m.LoginPassword')" size="large" @on-enter="handleLogin">
         <Icon type="ios-locked-outline" slot="prepend"></Icon>
         </Input>
-        -->
       </FormItem>
       <FormItem prop="tfa_code" v-if="tfaRequired">
-        <Input v-model="formLogin.tfa_code"
-        </Input>
-        <!--
         <Input v-model="formLogin.tfa_code" :placeholder="$t('m.TFA_Code')">
         <Icon type="ios-lightbulb-outline" slot="prepend"></Icon>
         </Input>
-        -->
       </FormItem>
     </Form>
-    <!--
     <div class="footer">
       <Button
         type="primary"
@@ -41,7 +28,6 @@
       <a v-if="website.allow_register" @click.stop="handleBtnClick('register')">{{$t('m.No_Account')}}</a>
       <a @click.stop="goResetPassword" style="float: right">{{$t('m.Forget_Password')}}</a>
     </div>
-    -->
   </div>
 </template>
 
@@ -81,10 +67,6 @@
         }
       }
     },
-    // xyaw
-    mounted: function () {
-      this.handleLogin()
-    },
     methods: {
       ...mapActions(['changeModalStatus', 'getProfile']),
       handleBtnClick (mode) {
@@ -94,12 +76,6 @@
         })
       },
       handleLogin () {
-        // this.formLogin.username = 'test'
-        // this.formLogin.password = 'test1234'
-        //
-        // this.changeModalStatus({visible: false})
-        // this.$router.push({name: 'tlogin'})
-
         this.validateForm('formLogin').then(valid => {
           this.btnLoginLoading = true
           let formData = Object.assign({}, this.formLogin)
