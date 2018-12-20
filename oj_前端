@@ -1,3 +1,14 @@
+1.第一次重建需要修改root密碼
+网页上找回密码
+后台用户管理重置
+超级管理员等密码也忘记，可以使用下面的命令
+
+docker exec -it oj-backend /bin/sh
+python3 manage.py inituser --username USERNAME --password NEW_PASSWORD --action=reset
+
+
+2. 要修改前端須執行底下4個命令
+
 npm install
 
 
@@ -13,20 +24,16 @@ npm run dev
 
 
 
+3.前端安裝到source code 中
 
-安裝到source code 中
-
-1.
-
+a.
 npm run build 就可以得到一个 dist 文件夹
 
-2.
-
+b.
 将 dist 文件夹复制到服务器上某个目录下，比如 /data/OnlineJudgeDeploy/data/backend/dist，然后修改 docker-compose.yml，
 在 oj-backend 模块中的 volumes 中增加一行 - /data/OnlineJudgeDeploy/data/backend/dist:/app/dist （冒号前面的请修改为实际的路径）
 
-
-3.
+c.
 
  docker-compose up -d  (-d 可省略)
 
