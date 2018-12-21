@@ -35,20 +35,16 @@ from requests_oauthlib import OAuth2Session
 #from django.contrib.auth import get_user_model
 #User = get_user_model()
 
-from django.contrib.auth.backends import ModelBackend
-from django.contrib.auth.tokens import default_token_generator
+# from django.contrib.auth.backends import ModelBackend
+# from django.contrib.auth.tokens import default_token_generator
+#
+# from django.contrib.auth import authenticate
 
-from django.contrib.auth import authenticate
-
-import json
+# import json
 # import requests
 # import json
 # from django.http import StreamingHttpResponse
 # from oauthlib.oauth2 import BackendApplicationClient
-
-state1 = None
-token1 = None
-# token2 = None
 
 # the openedu data
 client_id = '8ece2f9def967da23831'
@@ -59,7 +55,7 @@ authorization_base_url = 'https://courses-api.openedu.tw/oauth2/authorize'
 token_url = 'https://courses-api.openedu.tw/oauth2/access_token'
 
 redirect_uri = 'https://oj.openedu.tw/api/rlogin'
-oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=['email', 'profile', 'openid'])
+
 
 
 
@@ -197,16 +193,21 @@ class CheckTFARequiredAPI(APIView):
 #             return user
 #         return None
 
-
+# @method_decorator(csrf_exempt)
 def UserLoginAPI1(request):
-    authorization_url, state1 = oauth.authorization_url(authorization_base_url)
-    print(authorization_url)
+    oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=['email', 'profile', 'openid'])
+    authorization_url, state = oauth.authorization_url(authorization_base_url)
+    #  print(authorization_url)
+    # request.session['state']=state
     return HttpResponseRedirect(authorization_url)
 
 
+# @method_decorator(csrf_exempt)
 def UserLoginAPI2(request):
     redirect_response = 'https://oj.openedu.tw'+request.get_full_path()
-    token1 = oauth.fetch_token(token_url, authorization_response=redirect_response, client_secret=client_secret)
+    oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=['email', 'profile', 'openid'])
+    request.session['token'] = oauth.fetch_token(token_url, authorization_response=redirect_response,
+                                                 client_secret=client_secret)
     # token2 = oauth.access_token
     # return HttpResponse(token2)
     r = oauth.get(requestapi)
@@ -263,8 +264,8 @@ class UserLoginAPI(APIView):
 
 class UserLogoutAPI(APIView):
     def get(self, request):
-        if request.session['token']:
-            del request.session['token']
+        # del request.session['state']
+        del request.session['token']
         auth.logout(request)
         return self.success()
 
