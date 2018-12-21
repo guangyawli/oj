@@ -263,6 +263,8 @@ class UserLoginAPI(APIView):
 
 class UserLogoutAPI(APIView):
     def get(self, request):
+        if request.session['token']:
+            del request.session['token']
         auth.logout(request)
         return self.success()
 
