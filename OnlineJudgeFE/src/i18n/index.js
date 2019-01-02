@@ -19,7 +19,7 @@ for (let lang of languages) {
 }
 // load language packages
 export default new VueI18n({
-  locale: 'en-US',
+  locale: 'zh-TW',
   messages: messages
 })
 
