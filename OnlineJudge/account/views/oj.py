@@ -232,15 +232,35 @@ class UserGradeAPI(APIView):
         User grade api
         """
         data = request.data
-        problem_id = data["problem_id"]
+        course_id = data["course_id"]
         stu_name = data["stu_name"]
+        problem_dis_id = data["problem_display"]
+
+        # check = User.objects.filter(username=stu_name).exists()
+        # if not check:
+        #     return self.error("no student")
 
         profile = User.objects.get(username=stu_name).userprofile
-        oi_problems_status = profile.oi_problems_status.get("problems", {})
+        acm_problems = profile.acm_problems_status.get("problems", {})
+        oi_problems = profile.oi_problems_status.get("problems", {})
+        ids = list(acm_problems.keys()) + list(oi_problems.keys())
+        display_ids = Problem.objects.filter(id__in=ids, visible=True).values_list("_id", flat=True)
+
+        if not ids:
+            return self.error("no problem ids")
+
+        id_map = dict(zip(ids, display_ids))
+
+        for k, v in id_map.items():
+            if v == problem_dis_id:
+                problem_id = k
+
+        # oi_problems_status = profile.oi_problems_status.get("problems", {})
         distdata = {"GetScore": 0}
-        distdata["GetScore"] = oi_problems_status[problem_id]["score"]
+        distdata["GetScore"] = oi_problems[problem_id]["score"]
 
         return self.success(distdata)
+
 
 
 class UserLoginAPI(APIView):
@@ -274,8 +294,8 @@ class UserLoginAPI(APIView):
 
 class UserLogoutAPI(APIView):
     def get(self, request):
-        if request.session['token']:
-            del request.session['token']
+        # if request.session['token']:
+        #     del request.session['token']
         auth.logout(request)
         return self.success()
 
