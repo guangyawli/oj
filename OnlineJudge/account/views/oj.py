@@ -236,9 +236,9 @@ class UserGradeAPI(APIView):
         stu_name = data["stu_name"]
         problem_dis_id = data["problem_display"]
 
-        # check = User.objects.filter(username=stu_name).exists()
-        # if not check:
-        #     return self.error("no student")
+        check = User.objects.filter(username=stu_name).exists()
+        if not check:
+            return self.error("no student")
 
         profile = User.objects.get(username=stu_name).userprofile
         acm_problems = profile.acm_problems_status.get("problems", {})
