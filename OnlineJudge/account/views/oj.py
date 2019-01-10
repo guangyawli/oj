@@ -31,6 +31,7 @@ from ..tasks import send_email_async
 #xyaw
 from django.http import HttpResponseRedirect,HttpResponse
 from requests_oauthlib import OAuth2Session
+import json
 
 #from django.contrib.auth import get_user_model
 #User = get_user_model()
@@ -225,12 +226,21 @@ def UserLoginAPI2(request):
         return HttpResponseRedirect('https://oj.openedu.tw')
 
 
-def UserLoginAPI3(request):
-    # oauth = OAuth2Session(client_id, token2)
-    # r = requests.get(requestapi)
-    r = oauth.get('https://courses-api.openedu.tw/oauth2/user_info')
-    tname=r.content["preferred_username"]
-    return HttpResponse(tname)
+class UserGradeAPI(APIView):
+    def get(self, request):
+        """
+        User grade api
+        """
+        data = request.data
+        problem_id = data["problem_id"]
+        stu_name = data["stu_name"]
+
+        profile = User.objects.get(username=stu_name).userprofile
+        oi_problems_status = profile.oi_problems_status.get("problems", {})
+        distdata = {"GetScore": 0}
+        distdata["GetScore"] = oi_problems_status[problem_id]["score"]
+
+        return self.success(distdata)
 
 
 class UserLoginAPI(APIView):
