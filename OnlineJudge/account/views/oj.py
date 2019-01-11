@@ -235,6 +235,7 @@ class UserGradeAPI(APIView):
         course_id = data["course_id"]
         stu_name = data["stu_name"]
         problem_dis_id = data["problem_display"]
+        problem_id = 0
 
         check = User.objects.filter(username=stu_name).exists()
         if not check:
@@ -244,17 +245,24 @@ class UserGradeAPI(APIView):
         acm_problems = profile.acm_problems_status.get("problems", {})
         oi_problems = profile.oi_problems_status.get("problems", {})
         ids = list(acm_problems.keys()) + list(oi_problems.keys())
-        display_ids = Problem.objects.filter(id__in=ids, visible=True).values_list("_id", flat=True)
+        # display_ids = Problem.objects.filter(id__in=ids, visible=True).values_list("_id", flat=True)
 
         if not ids:
-            return self.error("no problem ids")
+            return self.error("the stu have no problem answer")
 
-        id_map = dict(zip(ids, display_ids))
+        # id_map = dict(zip(ids, display_ids))
 
-        for k, v in id_map.items():
-            if v == problem_dis_id:
+        for k, v in acm_problems.items():
+            if v["_id"] ==  problem_dis_id:
+                problem_id = k
+        for k, v in oi_problems.items():
+            if v["_id"] ==  problem_dis_id:
                 problem_id = k
 
+        if problem_id == 0:
+            return self.error("no problem ids match the display id")
+
+        # print("[test problem id] : %d " , problem_id)
         # oi_problems_status = profile.oi_problems_status.get("problems", {})
         distdata = {"GetScore": 0}
         distdata["GetScore"] = oi_problems[problem_id]["score"]
