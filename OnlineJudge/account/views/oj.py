@@ -248,7 +248,7 @@ class UserGradeAPI(APIView):
         # display_ids = Problem.objects.filter(id__in=ids, visible=True).values_list("_id", flat=True)
 
         if not ids:
-            return self.error("the stu have no problem answer")
+            return self.error("no answer")
 
         # id_map = dict(zip(ids, display_ids))
 
@@ -260,7 +260,7 @@ class UserGradeAPI(APIView):
                 problem_id = k
 
         if problem_id == 0:
-            return self.error("no problem ids match the display id")
+            return self.error("no problem_id")
 
         # print("[test problem id] : %d " , problem_id)
         # oi_problems_status = profile.oi_problems_status.get("problems", {})
