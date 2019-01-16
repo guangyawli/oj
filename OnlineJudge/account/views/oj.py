@@ -239,7 +239,7 @@ class UserGradeAPI(APIView):
 
         check = User.objects.filter(username=stu_name).exists()
         if not check:
-            return self.error("no student")
+            return self.error("[OJ]Can not find the student!")
 
         profile = User.objects.get(username=stu_name).userprofile
         acm_problems = profile.acm_problems_status.get("problems", {})
@@ -248,7 +248,7 @@ class UserGradeAPI(APIView):
         # display_ids = Problem.objects.filter(id__in=ids, visible=True).values_list("_id", flat=True)
 
         if not ids:
-            return self.error("no answer")
+            return self.error("[OJ]The student doesn't submit any answer!")
 
         # id_map = dict(zip(ids, display_ids))
 
@@ -260,7 +260,7 @@ class UserGradeAPI(APIView):
                 problem_id = k
 
         if problem_id == 0:
-            return self.error("no problem_id")
+            return self.error("[OJ]The problem_id is not exist")
 
         # print("[test problem id] : %d " , problem_id)
         # oi_problems_status = profile.oi_problems_status.get("problems", {})
