@@ -213,4 +213,4 @@ RAVEN_CONFIG = {
 
 IP_HEADER = "HTTP_X_REAL_IP"
 
-DEBUG = True
+DEBUG = False
