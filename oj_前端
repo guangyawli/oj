@@ -1,3 +1,12 @@
+Main modules are available below:
+
+Backend(Django): https://github.com/QingdaoU/OnlineJudge
+Frontend(Vue): https://github.com/QingdaoU/OnlineJudgeFE
+Judger Sandbox(Seccomp): https://github.com/QingdaoU/Judger
+JudgeServer(A wrapper for Judger): https://github.com/QingdaoU/JudgeServer
+預設帳密    root   / rootroot
+
+
 1.第一次重建需要修改root密碼
 网页上找回密码
 后台用户管理重置
