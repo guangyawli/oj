@@ -17,6 +17,7 @@ from ..serializers import EditUserSerializer, UserAdminSerializer, GenerateUserS
 from ..serializers import ImportUserSeralizer
 
 
+
 class UserAdminAPI(APIView):
     @validate_serializer(ImportUserSeralizer)
     @super_admin_required
