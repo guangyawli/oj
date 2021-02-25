@@ -48,14 +48,16 @@ import json
 # from oauthlib.oauth2 import BackendApplicationClient
 
 # the openedu data
-
-provider_host = 'https://oj.twshop.asia'
 client_id = 'id'
 client_secret = 'secret'
-requestapi = 'https://pro.openedu.tw/api/mobile/v0.5/my_user_info'
-authorization_base_url = 'https://pro.openedu.tw/oauth2/authorize'
-token_url = 'https://pro.openedu.tw/oauth2/access_token'
-redirect_uri = 'https://oj.twshop.asia/api/rlogin'
+
+requestapi = 'https://courses-api.openedu.tw/oauth2/user_info'
+authorization_base_url = 'https://courses-api.openedu.tw/oauth2/authorize'
+token_url = 'https://courses-api.openedu.tw/oauth2/access_token'
+
+redirect_uri = 'https://oj.openedu.tw/api/rlogin'
+
+
 
 
 class UserProfileAPI(APIView):
@@ -194,7 +196,7 @@ class CheckTFARequiredAPI(APIView):
 
 # @method_decorator(csrf_exempt)
 def UserLoginAPI1(request):
-    oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=['email', 'profile', 'user_id'])
+    oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=['email', 'profile', 'openid'])
     authorization_url, state = oauth.authorization_url(authorization_base_url)
     #  print(authorization_url)
     # request.session['state']=state
@@ -203,25 +205,25 @@ def UserLoginAPI1(request):
 
 # @method_decorator(csrf_exempt)
 def UserLoginAPI2(request):
-    redirect_response = provider_host + request.get_full_path()
-    oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=['email', 'profile', 'user_id'])
+    redirect_response = 'https://oj.openedu.tw'+request.get_full_path()
+    oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=['email', 'profile', 'openid'])
     request.session['token'] = oauth.fetch_token(token_url, authorization_response=redirect_response,
                                                  client_secret=client_secret)
     # token2 = oauth.access_token
     # return HttpResponse(token2)
     r = oauth.get(requestapi)
-    if User.objects.filter(username=eval(r.text)["username"]).exists():
-        user = auth.authenticate(username=eval(r.text)['username'].lower(), password=eval(r.text)['id'])
+    if User.objects.filter(username=eval(r.text)["preferred_username"]).exists():
+        user = auth.authenticate(username=eval(r.text)['preferred_username'], password=eval(r.text)['user_tracking_id'])
         if user:
             auth.login(request, user)
-        return HttpResponseRedirect(provider_host)
+        return HttpResponseRedirect('https://oj.openedu.tw')
     else:
-        user = User.objects.create(username=eval(r.text)['username'].lower(), email=eval(r.text)["email"])
-        user.set_password(eval(r.text)["id"])
+        user = User.objects.create(username=eval(r.text)['preferred_username'], email=eval(r.text)["email"])
+        user.set_password(eval(r.text)["user_tracking_id"])
         user.save()
         UserProfile.objects.create(user=user)
         auth.login(request, user)
-        return HttpResponseRedirect(provider_host)
+        return HttpResponseRedirect('https://oj.openedu.tw')
 
 
 class UserGradeAPI(APIView):
